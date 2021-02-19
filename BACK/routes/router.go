@@ -13,3 +13,12 @@ func BodyRequest(c *gin.Context) {
 		c.String(http.StatusOK, "")
 	}
 }
+
+func GetRequest(c *gin.Context) {
+	var msg string
+	if err := c.ShouldBind(&msg); err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	} else {
+		c.String(http.StatusOK, "")
+	}
+}
