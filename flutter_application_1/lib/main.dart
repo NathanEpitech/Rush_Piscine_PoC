@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/task.dart';
+import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/const.dart';
+import 'package:flutter_application_1/const.dart';
+import 'package:http/http.dart' as http;
 
-void main() => runApp(new TodoApp());
+void main() => runApp(new MyApp());
+
+void onLogin(String email, String password) {
+  // A completer
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      onGenerateRoute: Router.generateRoute,
+      initialRoute: taskRoute,
+    );
+  }
+}
 
 class TodoApp extends StatelessWidget {
   @override
@@ -9,85 +28,49 @@ class TodoApp extends StatelessWidget {
   }
 }
 
-class TodoList extends StatefulWidget {
-  @override
-  createState() => new TodoListState();
-}
-
-class TodoListState extends State<TodoList> {
-  List<String> _todoItems = [];
-
-  void _addTodoItem(String task) {
-    if (task.length > 0) {
-      setState(() => _todoItems.add(task));
-    }
-  }
-
-  void _removeTodoItem(int index) {
-    setState(() => _todoItems.removeAt(index));
-  }
-
-  void _promptRemoveTodoItem(int index) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-              title: new Text('Mark "${_todoItems[index]}" as done?'),
-              actions: <Widget>[
-                new TextButton(
-                    child: new Text('CANCEL'),
-                    onPressed: () => Navigator.of(context).pop()),
-                new TextButton(
-                    child: new Text('MARK AS DONE'),
-                    onPressed: () {
-                      _removeTodoItem(index);
-                      Navigator.of(context).pop();
-                    })
-              ]);
-        });
-  }
-
-  Widget _buildTodoList() {
-    return new ListView.builder(
-      itemBuilder: (context, index) {
-        if (index < _todoItems.length) {
-          return _buildTodoItem(_todoItems[index], index);
-        }
-      },
-    );
-  }
-
-  Widget _buildTodoItem(String todoText, int index) {
-    return new ListTile(
-        title: new Text(todoText), onTap: () => _promptRemoveTodoItem(index));
-  }
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(title: new Text('Todo App')),
-      body: _buildTodoList(),
-      floatingActionButton: new FloatingActionButton(
-          onPressed: _pushAddTodoScreen,
-          tooltip: 'Add Project',
-          child: new Icon(Icons.add)),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, feedRoute, arguments: 'Data from home');
+        },
+      ),
+      body: Center(child: Text('Home')),
     );
   }
+}
 
-  void _pushAddTodoScreen() {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new Scaffold(
-          appBar: new AppBar(title: new Text('Add a new project')),
-          body: new TextField(
-            autofocus: true,
-            onSubmitted: (val) {
-              _addTodoItem(val);
-              Navigator.pop(context);
-            },
-            decoration: new InputDecoration(
-                hintText: 'Enter a project to do...',
-                contentPadding: const EdgeInsets.all(16.0)),
-          ));
-    }));
+class Feed extends StatelessWidget {
+  final String data;
+  Feed(this.data);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: Text('Feed: $data')),
+    );
+  }
+}
+
+class Router {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case homeRoute:
+        return MaterialPageRoute(builder: (_) => Home());
+      case feedRoute:
+        var data = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => Feed(data));
+      case taskRoute:
+        return MaterialPageRoute(builder: (_) => TodoApp());
+      case loginRoute:
+        return MaterialPageRoute(builder: (_) => TODOLogin(onLogin: onLogin));
+      default:
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                  body: Center(
+                      child: Text('No route defined for ${settings.name}')),
+                ));
+    }
   }
 }
