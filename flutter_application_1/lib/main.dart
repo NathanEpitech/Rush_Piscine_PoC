@@ -1,117 +1,93 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(TODOApp());
+void main() => runApp(new TodoApp());
 
-class Task {
-  String _name;
-  bool _completed;
-
-  Task(this._name);
-
-  getName() => this._name;
-  setName(name) => this._name = name;
-
-  isCompleted() => this._completed;
-  setCompleted(completed) => this._completed = completed;
-}
-
-class TODOApp extends StatelessWidget {
+class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TODO();
+    return new MaterialApp(title: 'Todo List', home: new TodoList());
   }
 }
 
-class TODO extends StatefulWidget {
+class TodoList extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return TODOState();
-  }
+  createState() => new TodoListState();
 }
 
-class TODOState extends State<TODO> {
-  final List<Task> tasks = [];
+class TodoListState extends State<TodoList> {
+  List<String> _todoItems = [];
 
-  void onTaskCreated(String name) {
-    setState(() {
-      tasks.add(Task(name));
-    });
+  void _addTodoItem(String task) {
+    if (task.length > 0) {
+      setState(() => _todoItems.add(task));
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TODO app',
-      theme: ThemeData(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => TODOList(tasks: tasks),
-        '/create': (context) => TODOCreate(
-              onCreate: onTaskCreated,
-            ),
+  void _removeTodoItem(int index) {
+    setState(() => _todoItems.removeAt(index));
+  }
+
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+              title: new Text('Mark "${_todoItems[index]}" as done?'),
+              actions: <Widget>[
+                new FlatButton(
+                    child: new Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()),
+                new FlatButton(
+                    child: new Text('MARK AS DONE'),
+                    onPressed: () {
+                      _removeTodoItem(index);
+                      Navigator.of(context).pop();
+                    })
+              ]);
+        });
+  }
+
+  Widget _buildTodoList() {
+    return new ListView.builder(
+      itemBuilder: (context, index) {
+        if (index < _todoItems.length) {
+          return _buildTodoItem(_todoItems[index], index);
+        }
       },
     );
   }
-}
 
-class TODOList extends StatelessWidget {
-  final List<Task> tasks;
-
-  TODOList({@required this.tasks});
+  Widget _buildTodoItem(String todoText, int index) {
+    return new ListTile(
+        title: new Text(todoText), onTap: () => _promptRemoveTodoItem(index));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TODO app'),
-      ),
-      body: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(tasks[index].getName()),
-            );
-          }),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.pushNamed(context, '/create'),
-          child: Icon(Icons.add)),
+    return new Scaffold(
+      appBar: new AppBar(title: new Text('Todo List')),
+      body: _buildTodoList(),
+      floatingActionButton: new FloatingActionButton(
+          onPressed: _pushAddTodoScreen,
+          tooltip: 'Add task',
+          child: new Icon(Icons.add)),
     );
   }
-}
 
-class TODOCreate extends StatefulWidget {
-  final onCreate;
-
-  TODOCreate({@required this.onCreate});
-
-  @override
-  State<StatefulWidget> createState() {
-    return TODOCreateState();
-  }
-}
-
-class TODOCreateState extends State<TODOCreate> {
-  final TextEditingController controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Create a task')),
-      body: Center(
-          child: Padding(
-              padding: EdgeInsets.all(16),
-              child: TextField(
-                  autofocus: true,
-                  controller: controller,
-                  decoration:
-                      InputDecoration(labelText: 'Enter name for your task')))),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.done),
-        onPressed: () {
-          widget.onCreate(controller.text);
-          Navigator.pop(context);
-        },
-      ),
-    );
+  void _pushAddTodoScreen() {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return new Scaffold(
+          appBar: new AppBar(title: new Text('Add a new project')),
+          body: new TextField(
+            autofocus: true,
+            onSubmitted: (val) {
+              _addTodoItem(val);
+              Navigator.pop(context);
+            },
+            decoration: new InputDecoration(
+                hintText: 'Enter a project to do...',
+                contentPadding: const EdgeInsets.all(16.0)),
+          ));
+    }));
   }
 }
