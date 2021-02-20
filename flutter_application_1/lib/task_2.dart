@@ -24,7 +24,7 @@ class TodoListState_2 extends State<TodoList_2> {
         context: context,
         builder: (BuildContext context) {
           return new AlertDialog(
-              title: new Text('Project "${_todoItems[index]}"'),
+              title: new Text('Task : ${_todoItems[index]}'),
               actions: <Widget>[
                 new TextButton(
                     child: new Text('CANCEL'),
