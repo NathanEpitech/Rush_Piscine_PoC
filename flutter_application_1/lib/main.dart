@@ -1,30 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/task.dart';
 import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/const.dart';
+import 'package:flutter_application_1/task_2.dart';
+import 'package:flutter_application_1/theme.dart';
 import 'package:flutter_application_1/const.dart';
 import 'package:http/http.dart' as http;
 
-void main() => runApp(new MyApp());
+void main() => runApp(new TodoApp());
+
+class TodoApp extends StatelessWidget {
+  TodoApp({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'Todo App',
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(
+          buttonTheme: ButtonThemeData(
+            buttonColor: Color(0xFFD58000),
+            textTheme: ButtonTextTheme.accent,
+            colorScheme: Theme.of(context)
+                .colorScheme
+                .copyWith(secondary: Colors.white), // Text color
+          ),
+          backgroundColor: Colors.blue,
+          brightness: Brightness.dark),
+      home: new TodoList(),
+    );
+  }
+}
 
 void onLogin(String email, String password) {
   // A completer
 }
 
-class MyApp extends StatelessWidget {
+class Navig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateRoute: Router.generateRoute,
-      initialRoute: taskRoute,
-    );
-  }
-}
-
-class TodoApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(title: 'Todo App', home: new TodoList());
+    return new MaterialApp(title: 'Navig', home: new TodoList_2());
   }
 }
 
@@ -50,27 +63,5 @@ class Feed extends StatelessWidget {
     return Scaffold(
       body: Center(child: Text('Feed: $data')),
     );
-  }
-}
-
-class Router {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case homeRoute:
-        return MaterialPageRoute(builder: (_) => Home());
-      case feedRoute:
-        var data = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => Feed(data));
-      case taskRoute:
-        return MaterialPageRoute(builder: (_) => TodoApp());
-      case loginRoute:
-        return MaterialPageRoute(builder: (_) => TODOLogin(onLogin: onLogin));
-      default:
-        return MaterialPageRoute(
-            builder: (_) => Scaffold(
-                  body: Center(
-                      child: Text('No route defined for ${settings.name}')),
-                ));
-    }
   }
 }

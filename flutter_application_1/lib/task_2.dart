@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/task_2.dart';
-import 'package:flutter_application_1/data.dart';
 import 'package:flutter_application_1/theme.dart';
 
-class TodoList extends StatefulWidget {
+class TodoList_2 extends StatefulWidget {
   @override
-  createState() => new TodoListState();
+  createState() => new TodoListState_2();
 }
 
-class TodoListState extends State<TodoList> {
-  Future<Album> futureAlbum;
+class TodoListState_2 extends State<TodoList_2> {
   List<String> _todoItems = [];
-  @override
-  void initState() {
-    super.initState();
-    futureAlbum = fetchAlbum();
-  }
 
   void _addTodoItem(String task) {
     if (task.length > 0) {
@@ -44,12 +36,6 @@ class TodoListState extends State<TodoList> {
                       _removeTodoItem(index);
                       Navigator.of(context).pop();
                     }),
-                new TextButton(
-                    child: new Text('GO TO "${_todoItems[index]}"'),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => TodoList_2()))),
               ]);
         });
   }
@@ -72,9 +58,9 @@ class TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(title: new Text('Todo App')),
+        appBar: new AppBar(title: new Text('Current projects')),
         body: _buildTodoList(),
-        floatingActionButton: new FancyButton(
+        floatingActionButton: new FancyButton_2(
           onPressed: _pushAddTodoScreen,
         ));
   }
@@ -82,7 +68,8 @@ class TodoListState extends State<TodoList> {
   void _pushAddTodoScreen() {
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new Scaffold(
-          appBar: new AppBar(title: new Text('Add a new project')),
+          appBar:
+              new AppBar(title: new Text('Add a new task for this project')),
           body: new TextField(
             autofocus: true,
             onSubmitted: (val) {
@@ -90,7 +77,7 @@ class TodoListState extends State<TodoList> {
               Navigator.pop(context);
             },
             decoration: new InputDecoration(
-                hintText: 'Enter a project to do...',
+                hintText: 'Enter a task to do...',
                 contentPadding: const EdgeInsets.all(16.0)),
           ));
     }));

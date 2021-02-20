@@ -1,0 +1,38 @@
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final MainModel _model = MainModel();
+    return ScopedModel<MainModel>(
+      model: _model,
+      child: MaterialApp(
+        onGenerateRoute: Router.generateRoute,
+        initialRoute: taskRoute,
+      ),
+    );
+  }
+}
+
+class Router {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case homeRoute:
+        return MaterialPageRoute(builder: (_) => Home());
+      case feedRoute:
+        var data = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => Feed(data));
+      case taskRoute:
+        return MaterialPageRoute(builder: (_) => TodoApp());
+      case loginRoute:
+        return MaterialPageRoute(builder: (_) => TODOLogin(onLogin: onLogin));
+      case task_2Route:
+      //return MaterialPageRoute(builder: (_) => TODOApp());
+      default:
+        return MaterialPageRoute(
+            builder: (_) => Scaffold(
+                  body: Center(
+                      child: Text('No route defined for ${settings.name}')),
+                ));
+    }
+  }
+}
