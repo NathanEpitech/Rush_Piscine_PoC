@@ -5,7 +5,7 @@ void main() => runApp(new TodoApp());
 class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(title: 'Todo List', home: new TodoList());
+    return new MaterialApp(title: 'Todo App', home: new TodoList());
   }
 }
 
@@ -34,10 +34,10 @@ class TodoListState extends State<TodoList> {
           return new AlertDialog(
               title: new Text('Mark "${_todoItems[index]}" as done?'),
               actions: <Widget>[
-                new FlatButton(
+                new TextButton(
                     child: new Text('CANCEL'),
                     onPressed: () => Navigator.of(context).pop()),
-                new FlatButton(
+                new TextButton(
                     child: new Text('MARK AS DONE'),
                     onPressed: () {
                       _removeTodoItem(index);
@@ -65,11 +65,11 @@ class TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(title: new Text('Todo List')),
+      appBar: new AppBar(title: new Text('Todo App')),
       body: _buildTodoList(),
       floatingActionButton: new FloatingActionButton(
           onPressed: _pushAddTodoScreen,
-          tooltip: 'Add task',
+          tooltip: 'Add Project',
           child: new Icon(Icons.add)),
     );
   }
