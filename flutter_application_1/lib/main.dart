@@ -4,6 +4,7 @@ import 'package:flutter_application_1/login.dart';
 import 'package:flutter_application_1/task_2.dart';
 import 'package:flutter_application_1/theme.dart';
 import 'package:flutter_application_1/const.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 void main() => runApp(new TodoApp());
@@ -38,30 +39,5 @@ class Navig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(title: 'Navig', home: new TodoList_2());
-  }
-}
-
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, feedRoute, arguments: 'Data from home');
-        },
-      ),
-      body: Center(child: Text('Home')),
-    );
-  }
-}
-
-class Feed extends StatelessWidget {
-  final String data;
-  Feed(this.data);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('Feed: $data')),
-    );
   }
 }

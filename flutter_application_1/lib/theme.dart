@@ -41,8 +41,8 @@ class FancyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new RawMaterialButton(
-      fillColor: Colors.deepOrange,
-      splashColor: Colors.orange,
+      fillColor: Colors.deepPurple,
+      splashColor: Colors.purple,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
         child: Text("Add Project"),
@@ -61,8 +61,8 @@ class FancyButton_2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new RawMaterialButton(
-      fillColor: Colors.deepOrange,
-      splashColor: Colors.orange,
+      fillColor: Colors.deepPurple,
+      splashColor: Colors.purple,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
         child: Text("Add Task"),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:flutter_application_1/task_2.dart';
 import 'package:flutter_application_1/data.dart';
 import 'package:flutter_application_1/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TodoList extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class TodoList extends StatefulWidget {
 class TodoListState extends State<TodoList> {
   Future<Album> futureAlbum;
   List<String> _todoItems = [];
+
+  get external => null;
   @override
   void initState() {
     super.initState();

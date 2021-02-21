@@ -31,7 +31,7 @@ class TodoListState_2 extends State<TodoList_2> {
                     onPressed: () => Navigator.of(context).pop()),
                 // ignore: missing_required_param
                 new TextButton(
-                    child: new Text('MARK AS DONE'),
+                    child: new Text('MARK AS FINISH'),
                     onPressed: () {
                       _removeTodoItem(index);
                       Navigator.of(context).pop();
@@ -58,7 +58,7 @@ class TodoListState_2 extends State<TodoList_2> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(title: new Text('Current projects')),
+        appBar: new AppBar(title: new Text('Current project')),
         body: _buildTodoList(),
         floatingActionButton: new FancyButton_2(
           onPressed: _pushAddTodoScreen,
